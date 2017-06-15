@@ -1,38 +1,53 @@
-const path = require('path')
-const webpack = require('webpack')
+const path = require('path');
+const webpack = require('webpack');
+const ChunksPlugin = require('webpack-split-chunks');
 
 module.exports = {
-  devtool: 'source-map',
-  entry: [
-    'babel-polyfill',
-    'react-hot-loader/patch',
-    './src/index'
-  ],
+    devtool: 'source-map',
+    entry: {
+        "app": [
+            'babel-polyfill',
+            'react-hot-loader/patch'
+        ],
+        "main": "./src/index"
+    },
 
-  output: {
-    path: path.join(__dirname, 'public'),
-    filename: '[name].bundle.js',
-    publicPath: '/public/'
-  },
+    output: {
+        path: path.join(__dirname, 'public'),
+        filename: '[name].bundle.js',
+        publicPath: '/public/'
+    },
 
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin()
-  ],
+    plugins: [
+        new ChunksPlugin({
+            from: ['app'],
+            to: 'vendor',
+            test: /node_modules/ // or an array of regex
+        }),
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NoEmitOnErrorsPlugin()
+    ],
 
-  module: {
-    rules: [
-      { test: /\.js?$/,
-        loader: 'babel-loader',
-        include: path.join(__dirname, 'src')
-      },
-      { test: /\.scss?$/,
-        loader: 'style-loader!css-loader!sass-loader',
-        include: path.join(__dirname, 'src', 'styles') },
-      { test: /\.png$/,
-        loader: 'file-loader' },
-      { test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
-        loader: 'file-loader'}
-    ]
-  }
-}
+    module: {
+        rules: [
+            {
+                test: /\.js?$/,
+                loader: 'babel-loader',
+                include: path.join(__dirname, 'src')
+            },
+            {
+                test: /\.scss?$/,
+                loader: 'style-loader!css-loader!sass-loader',
+                include: path.join(__dirname, 'src', 'styles')
+            },
+            {
+                test: /\.png$/,
+                loader: 'file-loader'
+            },
+            {
+                test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+                loader: 'file-loader'
+            }
+        ]
+    }
+};

@@ -1,10 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
-const ChunksPlugin = require('webpack-split-chunks');
 
 module.exports = {
     devtool: 'source-map',
-
     entry: {
         "main": "./src/index"
     },
@@ -15,10 +13,6 @@ module.exports = {
     },
 
     plugins: [
-        new ChunksPlugin({
-            to: 'vendor',
-            test: /node_modules/ // or an array of regex
-        }),
         new webpack.optimize.UglifyJsPlugin({
             minimize: true,
             compress: {
@@ -37,7 +31,8 @@ module.exports = {
             {
                 test: /\.js?$/,
                 loader: 'babel-loader',
-                include: path.join(__dirname, 'src')
+                include: path.join(__dirname, 'src'),
+                exclude: /node_modules/
             },
             {
                 test: /\.scss?$/,

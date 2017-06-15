@@ -1,15 +1,14 @@
 const path = require('path');
 const webpack = require('webpack');
-const ChunksPlugin = require('webpack-split-chunks');
 
 module.exports = {
     devtool: 'source-map',
     entry: {
-        "app": [
+        "main": [
             'babel-polyfill',
-            'react-hot-loader/patch'
+            'react-hot-loader/patch',
+            "./src/index"
         ],
-        "main": "./src/index"
     },
 
     output: {
@@ -19,21 +18,16 @@ module.exports = {
     },
 
     plugins: [
-        new ChunksPlugin({
-            from: ['app'],
-            to: 'vendor',
-            test: /node_modules/ // or an array of regex
-        }),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoEmitOnErrorsPlugin()
     ],
-
     module: {
         rules: [
             {
-                test: /\.js?$/,
+                test: /\.js$/,
                 loader: 'babel-loader',
-                include: path.join(__dirname, 'src')
+                include: path.join(__dirname, 'src'),
+                exclude: /node_modules/
             },
             {
                 test: /\.scss?$/,

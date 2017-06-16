@@ -5,6 +5,8 @@
   "main": "app.js",
   "license": "MIT",
   "scripts": {
+    "webpack:deploy": "npm run build",
+    "heroku-postbuild": "npm run webpack:deploy",
     "build": "cross-env NODE_ENV=production webpack --config ./webpack.prod.config.js --progress --colors",
     "start": "node app.js",
     "dev": "webpack-dev-server --hot --history-api-fallback --open",
@@ -21,6 +23,7 @@
     "babel-polyfill": "^6.23.0",
     "babel-preset-latest": "^6.24.1",
     "babel-preset-react": "^6.24.1",
+    "build-heroku": "^0.0.2",
     "cross-env": "^5.0.1",
     "css-loader": "^0.28.4",
     "file-loader": "^0.11.2",

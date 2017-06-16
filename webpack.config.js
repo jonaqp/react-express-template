@@ -7,7 +7,7 @@ module.exports = {
         "main": [
             'babel-polyfill',
             'react-hot-loader/patch',
-            "./src/index"
+            "./src/client/index"
         ],
     },
 
@@ -26,13 +26,13 @@ module.exports = {
             {
                 test: /\.js$/,
                 loader: 'babel-loader',
-                include: path.join(__dirname, 'src'),
+                include: path.join(__dirname, 'src', 'client'),
                 exclude: /node_modules/
             },
             {
                 test: /\.scss?$/,
                 loader: 'style-loader!css-loader!sass-loader',
-                include: path.join(__dirname, 'src', 'styles')
+                include: path.join(__dirname, 'src', 'client', 'styles')
             },
             {
                 test: /\.png$/,
